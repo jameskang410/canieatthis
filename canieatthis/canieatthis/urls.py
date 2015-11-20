@@ -16,6 +16,18 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
+from website import views
+
 urlpatterns = [
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^$', 'website.views.home', name='home'),
+
+    # API-related URLs
+
+    # view all approved foods
+    url(r'^api/food_list/$', views.FoodList.as_view(), name='food_list'),
+    # view all unapproved (user-submitted) foods
+    url(r'^api/user_list/$', views.UserList.as_view(), name='user_list'),
+    # add user-submitted foods
+    url(r'api/add_food/$', views.AddFood.as_view(), name='add_food'),
+
 ]

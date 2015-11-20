@@ -55,19 +55,10 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'canieatthis.urls'
 
-TEMPLATES = [
-    {
-        'BACKEND': 'django.db.backends.postgresql_psycopg2',
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
-]
+# TEMPLATE DIRECTORY 
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, "website", "templates"),
+)
 
 WSGI_APPLICATION = 'canieatthis.wsgi.application'
 
@@ -76,13 +67,18 @@ WSGI_APPLICATION = 'canieatthis.wsgi.application'
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
 DATABASES = {
+    # local
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'django',
-        'USER': 'django',
-        'PASSWORD': ,
-        'HOST': 'localhost',
-        'PORT': '5432'
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'OPTIONS': {
+            'options': '-c search_path=canieatthis'
+        },
+        # database name
+        'NAME': 'postgres',
+        'USER': 'jameskang',
+        'PASSWORD': '',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
 
@@ -105,3 +101,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "website", "static"),
+)
