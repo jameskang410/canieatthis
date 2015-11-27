@@ -104,7 +104,7 @@ function visualizeResults(response) {
         $("#results").append('<div class="helpful" id="helpful-' + hitsArray[i]._id + '"><p><small>Was this helpful?</small>' +
         '<button class="btn btn-xs btn-primary helpful-button" onClick="changeBoost(' + "'" + hitsArray[i]._id + "'" + ', true)">Yes</button>' + 
         '<button class="btn btn-xs btn-primary helpful-button" onClick="changeBoost(' + "'" + hitsArray[i]._id + "'" + ', false)">No</button></p></div>');
-        $("#results").append('<div class="helpful" id="helpful-thanks-' + hitsArray[i]._id + '"><p><small>Thanks for your help!</small>');        
+        $("#results").append('<div class="helpful" id="helpful-thanks-' + hitsArray[i]._id + '" style="display: none;"><p><small>Thanks for your help!</small>');        
 
         //useful for testing
         // $("#results").append('<p class="id">ID: ' + hitsArray[i]._id + '</p>');
