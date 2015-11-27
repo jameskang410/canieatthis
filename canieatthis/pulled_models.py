@@ -122,23 +122,10 @@ class DjangoSession(models.Model):
         db_table = 'django_session'
 
 
-class FoodTable(models.Model):
-    food = models.CharField(max_length=50, blank=True, null=True)
-    can_eat = models.CharField(max_length=10, blank=True, null=True)
-    source = models.CharField(max_length=100, blank=True, null=True)
+class Requests(models.Model):
+    food = models.CharField(max_length=30, blank=True, null=True)
     row_id = models.AutoField(primary_key=True)
 
     class Meta:
         managed = False
-        db_table = 'food_table'
-
-
-class UserTable(models.Model):
-    food = models.CharField(max_length=50, blank=True, null=True)
-    can_eat = models.CharField(max_length=10, blank=True, null=True)
-    source = models.CharField(max_length=100, blank=True, null=True)
-    row_id = models.AutoField(primary_key=True)
-
-    class Meta:
-        managed = False
-        db_table = 'user_table'
+        db_table = 'requests'

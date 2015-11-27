@@ -21,13 +21,7 @@ from website import views
 urlpatterns = [
     url(r'^$', 'website.views.home', name='home'),
 
-    # API-related URLs
-
-    # view all approved foods
-    url(r'^api/food_list/$', views.FoodList.as_view(), name='food_list'),
-    # view all unapproved (user-submitted) foods
-    url(r'^api/user_list/$', views.UserList.as_view(), name='user_list'),
-    # add user-submitted foods
-    url(r'api/add_food/$', views.AddFood.as_view(), name='add_food'),
+    # editing elasticsearch boost field
+    url(r'^boost/(?P<increment_decrement>yes|no)/(?P<e_id>[A-Za-z0-9\-\_]*)/$', 'website.views.boost', name='boost'),
 
 ]
