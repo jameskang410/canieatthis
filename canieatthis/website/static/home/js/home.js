@@ -97,8 +97,8 @@ function visualizeResults(response) {
 
         //source text and source
         $("#results").append('<div class=result>');
-        $("#results").append('<blockquote><p id="source-text">' + hitsArray[i]._source.text + '</p>' +
-        '<footer><a href="' + hitsArray[i]._source.source + '">' + hitsArray[i]._source.source + '</footer></blockquote>');
+        $("#results").append('<blockquote><p id="source-text">"' + hitsArray[i]._source.text + '"</p>' +
+        '<footer><a href="' + hitsArray[i]._source.source + '" target="_blank">' + hitsArray[i]._source.source + '</footer></blockquote>');
 
         //"was this helpful" button - usually shows 2 voting buttons; hidden after voting
         $("#results").append('<div class="helpful" id="helpful-' + hitsArray[i]._id + '"><p><small>Was this helpful?</small>' +

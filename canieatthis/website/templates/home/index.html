@@ -19,6 +19,15 @@
 
 	<div class="row" id="results">
 	</div>
+
+	<div class="row" id="recent-searches">
+		<h4>Recent searches</h4>
+		<ol>
+		{% for search in recent_searches %}
+			<li>{{search}}</li>
+		{% endfor %}
+		</ol>
+	</div>
 </div>
 
 {% endblock %}

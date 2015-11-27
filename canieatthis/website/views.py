@@ -6,6 +6,8 @@ from django.core.mail import send_mail
 from django.http import JsonResponse
 
 from elasticsearch import Elasticsearch
+import redis
+
 from textblob import TextBlob
 
 def home(request):
@@ -14,6 +16,10 @@ def home(request):
 		-AJAX to get results
 		-Sentiment analysis of results to get overall answer
 	"""
+
+	# get most recent searches from redis
+	r = redis.StrictRedis()
+	recent_search_array = r.lrange('recentsearches', 0, -1)
 
 	# getting AJAX request
 	if request.method == "POST":
@@ -50,9 +56,15 @@ def home(request):
 
 		# if there are any results
 		if count > 0:
-			sentiment_sum = 0
+
+			# add formatted user_request to redis as the most recent search
+			# removing everything but 5 most recent searches
+			r.lpush('recentsearches', user_request.strip().lower())
+			r.ltrim('recentsearches', 0, 4)
 
 			# calculate avg sentiment analysis
+			sentiment_sum = 0
+
 			for hit in hits_array['hits']:
 
 				# using TextBlob to get sentiment value of sentence
@@ -84,7 +96,7 @@ def home(request):
 		return JsonResponse({"hits" : hits_array, "conclusion" : conclusion})
 
 
-	return render(request, 'home/index.html')
+	return render(request, 'home/index.html', {"recent_searches" : recent_search_array})
 
 def boost(request, increment_decrement, e_id):
 	"""
