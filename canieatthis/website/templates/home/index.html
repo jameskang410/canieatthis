@@ -1,10 +1,22 @@
 {% extends 'base.html' %}
 
-{% block content %}
+{% block navbar %}
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="/">Home</a></li>
+          <li><a href="/about">About</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+{% endblock %}
 
-<div class="container">
-
-	<div class="row" id="main-area">
+{% block container %}
+	<div class="row center" id="main-area">
 		<div class="col-md-12 question-area">Can I eat this?</div>
 		<div class="col-md-12 text-area">
 			<input type="text" id="food-text-box">
@@ -14,20 +26,20 @@
 		</div>
 	</div>
 
-	<div class="row" id="overall-answer">
+	<div class="row center" id="overall-answer">
 	</div>
 
 	<div class="row" id="results">
 	</div>
+{% endblock %}
 
-	<div class="row" id="recent-searches">
-		<h4>Recent searches</h4>
-		<ol>
+{% block recent_searches %}
+	<div class="center" id="recent-searches">
+		<h4>Recent searches:</h4>
+		<ol class="list-inline">
 		{% for search in recent_searches %}
-			<li>{{search}}</li>
+			<li><a href="#" onClick="submitQuery('{{search}}')">{{search}}</a></li>
 		{% endfor %}
 		</ol>
 	</div>
-</div>
-
 {% endblock %}

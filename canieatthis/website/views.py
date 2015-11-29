@@ -13,7 +13,7 @@ from textblob import TextBlob
 def home(request):
 	"""
 	View for home
-		-AJAX to get results
+		-bulk of it is AJAX to get results
 		-Sentiment analysis of results to get overall answer
 	"""
 
@@ -29,7 +29,7 @@ def home(request):
 		es = Elasticsearch()
 
 		# weighting search based on boost field
-		# filtering out results with less than 0.5 scores
+		# filtering out results with less than 0.2 scores
 		search_query =  {
 							'query' : {
 								'function_score' : {
@@ -38,7 +38,7 @@ def home(request):
 											'text' : user_request
 										}
 									},
-									'min_score' : 0.5,
+									'min_score' : 0.2,
 									'script_score' : {
 										'script' : '_score * (float) _source.boost'
 									}
@@ -51,62 +51,42 @@ def home(request):
 		# array with all of the search hits
 		hits_array = data['hits']
 
-		# count of hits
-		count = hits_array['total']
+		# get conclusion (safe/not safe/don't know) from sentiment analysis of results
+		conclusion = sentiment_conclusion(hits_array)
 
-		# if there are any results
-		if count > 0:
-
-			# add formatted user_request to redis as the most recent search
-			# removing everything but 5 most recent searches
-			r.lpush('recentsearches', user_request.strip().lower())
-			r.ltrim('recentsearches', 0, 4)
-
-			# calculate avg sentiment analysis
-			sentiment_sum = 0
-
-			for hit in hits_array['hits']:
-
-				# using TextBlob to get sentiment value of sentence
-				sentence = hit['_source']['text']
-				b = TextBlob(sentence)
-				sentiment_num = b.sentiment[0]
-
-				# adding sentiment value to sum
-				sentiment_sum += sentiment_num
-
-			# getting average
-			sentiment_avg = sentiment_sum / count
-
-			# based on sentiment avg, making conclusion
-			# set threshold to 0.2
-			if sentiment_avg >= 0.2:
-				conclusion = "safe"
-			else:
-				conclusion = "not safe"
-
-
-		# if no results - send e-mail with request
-		else:
-			conclusion = "na"
-
+		# if search term could not be found, send e-mail
+		if conclusion == "na":
 			email_message = 'The following food was searched but not found: <b>%s</b>' % user_request
 			send_mail('REQUEST WAS ADDED', email_message, 'canieatthiswebsite@gmail.com', ['jameskang410@gmail.com'], html_message=email_message)
 
-		return JsonResponse({"hits" : hits_array, "conclusion" : conclusion})
+		# else search term was found, add formatted user_request to redis' recent searches
+		else:
+			r.lpush('recentsearches', user_request.strip().lower())
+			# keeping only 5 most recent searches
+			r.ltrim('recentsearches', 0, 4)
 
+		return JsonResponse({"hits" : hits_array, "conclusion" : conclusion})
 
 	return render(request, 'home/index.html', {"recent_searches" : recent_search_array})
 
+def about(request):
+	"""
+	View for about page
+	"""
+
+	return render(request, 'about/about.html')
+
 def boost(request, increment_decrement, e_id):
 	"""
-	For "Was this helpful?" feature
-	Receives elasticsearch ID and uses it to adjust boost 
+	Helper method for home view
+		-For "Was this helpful?" feature
+		-Receives info from custom URL and uses it to adjust boost field
+		which affects scoring for subsequent searches
 	"""
 	es = Elasticsearch()
 
 	# figuring out if boost should be incremented or decremented
-	if str(increment_decrement) == "yes":
+	if increment_decrement == "yes":
 		operation = "+"
 	else:
 		operation = "-"
@@ -128,3 +108,49 @@ def boost(request, increment_decrement, e_id):
 	response = es.update(index='pregnancy', id=e_id, doc_type='html', body=update_script)
 
 	return JsonResponse(response)
+
+def sentiment_conclusion(hits_array):
+	"""
+	Helper method for home view
+		-Gets the avg sentiment from elasticsearch results and make a conclusion based on it (safe/not safe/don't know)
+	"""
+	# count of hits
+	count = hits_array['total']
+
+	# if there are any results
+	if count > 0:
+
+		# calculate avg sentiment analysis
+		sentiment_sum = 0
+
+		for hit in hits_array['hits']:
+
+			# using TextBlob to get sentiment value of sentence
+			sentence = hit['_source']['text']
+			b = TextBlob(sentence)
+			sentiment_num = b.sentiment[0]
+
+			# adding sentiment value to sum
+			sentiment_sum += sentiment_num
+
+			# print(sentiment_num)
+
+		# getting average
+		sentiment_avg = sentiment_sum / count
+
+		# print(sentiment_avg)
+
+		# based on sentiment avg, making conclusion
+		# set threshold to 0.1
+		if sentiment_avg >= 0.1:
+			conclusion = "safe"
+		else:
+			conclusion = "not safe"
+
+
+	# if no results
+	else:
+		conclusion = "na"
+
+	return conclusion
+

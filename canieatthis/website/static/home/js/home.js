@@ -28,23 +28,39 @@ $.ajaxSetup({
     }
 });
 
-//useful for making a 'loading' 
-var buttonAsThis;
-
 //main functions
 $(document).ready(function() {
+    
+    //set focus on textbox
+    $("#food-text-box").focus();
 
     //submit button
     $("#submit-button").button().click(function() {
 
-        buttonAsThis = this;
         $("#submit-button").button('loading');
 
         //get user input
         var userInput = $("#food-text-box").val();
 
-        //submit user input to django view using AJAX
-        submitQuery(userInput);
+        //making sure input isn't empty string
+        if (userInput) {
+            //submit user input to django view using AJAX
+            submitQuery(userInput);
+        }
+        else {
+            $("#submit-button").button('reset');
+        }
+
+    });
+
+    //if enter is pressed on search box, submit button is clicked
+    $("#food-text-box").keypress(function (e) {
+        var key = e.which;
+
+        //if enter
+        if (key == 13) {
+            $("#submit-button").click();
+        }
     });
 });
 
@@ -79,17 +95,19 @@ function visualizeResults(response) {
     var conclusion = response.conclusion;
 
     if (conclusion === "safe") {
-        $("#overall-answer").append('<h3 id="answer-text">Safe to consume!</h3>');
+        $("#overall-answer").append('<h1 id="answer-text">Safe to consume!</h1>');
     }
     else if (conclusion === "not safe") {
-        $("#overall-answer").append('<h3 id="answer-text">NOT safe to consume!</h3>');
+        $("#overall-answer").append('<h1 id="answer-text">NOT safe to consume!</h1>');
     }
     else {
-        $("#overall-answer").append('<h3 id="answer-text">Could not find answer</h3>')
+        $("#overall-answer").append('<h1 id="answer-text">Could not find answer</h1>')
     }
 
     //FORMATTING RESULTS
     $("#results").empty();
+
+    $("#results").append('<h3>Sources:</h3>');
 
     var hitsArray = response.hits.hits;
 
