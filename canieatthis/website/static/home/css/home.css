@@ -10,3 +10,12 @@
     left: 45%;
     height: 30px;
 }
+
+#main-area {
+	padding-top: 10%;
+}
+
+#button-area {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}

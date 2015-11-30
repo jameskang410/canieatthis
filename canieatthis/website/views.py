@@ -1,8 +1,6 @@
 from django.shortcuts import render
 from django.shortcuts import render_to_response
 
-from django.core.mail import send_mail
-
 from django.http import JsonResponse
 
 from elasticsearch import Elasticsearch
@@ -54,10 +52,9 @@ def home(request):
 		# get conclusion (safe/not safe/don't know) from sentiment analysis of results
 		conclusion = sentiment_conclusion(hits_array)
 
-		# if search term could not be found, send e-mail
+		# if search term could not be found, add to redis list (that will be sent as e-mail)
 		if conclusion == "na":
-			email_message = 'The following food was searched but not found: <b>%s</b>' % user_request
-			send_mail('REQUEST WAS ADDED', email_message, 'canieatthiswebsite@gmail.com', ['jameskang410@gmail.com'], html_message=email_message)
+			r.lpush('missed_searches', user_request.strip().lower())
 
 		# else search term was found, add formatted user_request to redis' recent searches
 		else:

@@ -106,23 +106,25 @@ function visualizeResults(response) {
 
     //FORMATTING RESULTS
     $("#results").empty();
+    
+    var html = [];
 
-    $("#results").append('<h3>Sources:</h3>');
+    html.push('<h3>Sources:</h3>');
 
     var hitsArray = response.hits.hits;
 
     for (var i = 0; i < hitsArray.length; i++) {
 
         //source text and source
-        $("#results").append('<div class=result>');
-        $("#results").append('<blockquote><p id="source-text">"' + hitsArray[i]._source.text + '"</p>' +
-        '<footer><a href="' + hitsArray[i]._source.source + '" target="_blank">' + hitsArray[i]._source.source + '</footer></blockquote>');
+        html.push('<div class="result">');
+        html.push('<blockquote><p id="source-text">"' + hitsArray[i]._source.text + '"</p>' +
+        '<footer><a href="' + hitsArray[i]._source.source + '" target="_blank">' + hitsArray[i]._source.source + '</a></footer></blockquote>');
 
         //"was this helpful" button - usually shows 2 voting buttons; hidden after voting
-        $("#results").append('<div class="helpful" id="helpful-' + hitsArray[i]._id + '"><p><small>Was this helpful?</small>' +
+        html.push('<div class="helpful" id="helpful-' + hitsArray[i]._id + '"><p><small>Was this helpful?</small>' +
         '<button class="btn btn-xs btn-primary helpful-button" onClick="changeBoost(' + "'" + hitsArray[i]._id + "'" + ', true)">Yes</button>' + 
         '<button class="btn btn-xs btn-primary helpful-button" onClick="changeBoost(' + "'" + hitsArray[i]._id + "'" + ', false)">No</button></p></div>');
-        $("#results").append('<div class="helpful" id="helpful-thanks-' + hitsArray[i]._id + '" style="display: none;"><p><small>Thanks for your help!</small>');        
+        html.push('<div class="helpful" id="helpful-thanks-' + hitsArray[i]._id + '" style="display: none;"><p><small>Thanks for your help!</small></div>');        
 
         //useful for testing
         // $("#results").append('<p class="id">ID: ' + hitsArray[i]._id + '</p>');
@@ -130,8 +132,14 @@ function visualizeResults(response) {
         // $("#results").append('<p class="score">SCORE: ' + hitsArray[i]._score + '</p>');
         // $("#results").append('<p class="boost"> BOOST: ' + hitsArray[i]._source.boost + '</p>');
 
-        $("#results").append('</div>');
+        html.push('</div>');
     }
+
+    $("#results").append(html.join(''));
+
+    //prob a better way to do this, but maybe not worth time
+    //need to move footer from absolute position
+    $("#footer-info").css("position", "inherit");
 };
 
 //changing boost score based on "was this helpful" input
