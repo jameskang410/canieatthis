@@ -117,13 +117,13 @@ function visualizeResults(response) {
 
         //source text and source
         html.push('<div class="result">');
-        html.push('<blockquote><p id="source-text">"' + hitsArray[i]._source.text + '"</p>' +
+        html.push('<blockquote><p id="source-text"><i>"' + hitsArray[i]._source.text + '</i>"</p>' +
         '<footer><a href="' + hitsArray[i]._source.source + '" target="_blank">' + hitsArray[i]._source.source + '</a></footer></blockquote>');
 
         //"was this helpful" button - usually shows 2 voting buttons; hidden after voting
         html.push('<div class="helpful" id="helpful-' + hitsArray[i]._id + '"><p><small>Was this helpful?</small>' +
-        '<button class="btn btn-xs btn-primary helpful-button" onClick="changeBoost(' + "'" + hitsArray[i]._id + "'" + ', true)">Yes</button>' + 
-        '<button class="btn btn-xs btn-primary helpful-button" onClick="changeBoost(' + "'" + hitsArray[i]._id + "'" + ', false)">No</button></p></div>');
+        '<span class="helpful-area"><button class="btn btn-xs btn-primary helpful-button" onClick="changeBoost(' + "'" + hitsArray[i]._id + "'" + ', true)">Yes</button></span>' + 
+        '<span class="helpful-area"><button class="btn btn-xs btn-primary helpful-button" onClick="changeBoost(' + "'" + hitsArray[i]._id + "'" + ', false)">No</button></p></span></div>');
         html.push('<div class="helpful" id="helpful-thanks-' + hitsArray[i]._id + '" style="display: none;"><p><small>Thanks for your help!</small></div>');        
 
         //useful for testing

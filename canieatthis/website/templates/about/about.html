@@ -16,7 +16,27 @@
 {% endblock %}
 
 {% block container %}
-<div class="row center">
-	<h1>Under Construction</h1>
-</div>
+	<div class="main-area" id="about-section">
+		<div class="paragraph">
+			<h1>Why?</h1>
+			<ul>
+				<li>My wife is pregnant!</li>
+				<li>I got kinda tired of googling if she's allowed to eat something. Haha. Well, and I thought it could be a good chance to try some technology stuff I always heard about.</li>
+				<li>I missed web development. Except for CSS. I will never miss CSS. Which probably explains my "minimalist" (aka plain) websites. I regret nothing.</li>
+			</ul>
+		</div>
+
+		<div class="paragraph">
+			<h1>How?</h1>
+			<ul>
+				<li>I used <a href="http://www.crummy.com/software/BeautifulSoup/">BeautifulSoup</a> to scrape a bunch of pregnancy websites my wife and I frequented.</li>
+				<li>The data was parsed into sentences and indexed as documents into <a href="https://www.elastic.co/">Elasticsearch</a>. 
+					<ul>
+						<li>I added an integer field to every document to weigh documents' scores because there are definitely some documents that do not contain useful information. Users can help adjust this field (and therefore the search results) by using the <i>Was this helpful?</i> buttons next to each search result.</li>
+					</ul>
+				<li>I used <a href="https://textblob.readthedocs.org/en/dev/">TextBlob</a> to do sentiment analyses on the search results and return an overall conclusion (i.e. safe or not) based on the average of the sentiment scores. I'm not totally satisfied with this solution, but it's a start.</li>
+				<li>I used <a href="http://redis.io/">Redis</a> to handle recent searches and build a list of missed searches that are e-mailed to me (and flushed) every night via cron jobs. Theoretically I'll start scraping other websites to cover these missed searches. Theoretically...</li>
+			</ul>
+		</li>
+	</div>
 {% endblock %}

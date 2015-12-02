@@ -17,7 +17,7 @@ def home(request):
 
 	# get most recent searches from redis
 	r = redis.StrictRedis()
-	recent_search_array = r.lrange('recentsearches', 0, -1)
+	recent_search_array = r.lrange('recent_searches', 0, -1)
 
 	# getting AJAX request
 	if request.method == "POST":
@@ -58,9 +58,9 @@ def home(request):
 
 		# else search term was found, add formatted user_request to redis' recent searches
 		else:
-			r.lpush('recentsearches', user_request.strip().lower())
+			r.lpush('recent_searches', user_request.strip().lower())
 			# keeping only 5 most recent searches
-			r.ltrim('recentsearches', 0, 4)
+			r.ltrim('recent_searches', 0, 4)
 
 		return JsonResponse({"hits" : hits_array, "conclusion" : conclusion})
 
@@ -143,7 +143,6 @@ def sentiment_conclusion(hits_array):
 			conclusion = "safe"
 		else:
 			conclusion = "not safe"
-
 
 	# if no results
 	else:
