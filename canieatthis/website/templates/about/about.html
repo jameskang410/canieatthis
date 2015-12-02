@@ -30,7 +30,7 @@
 			<h1>How?</h1>
 			<ul>
 				<li>I used <a href="http://www.crummy.com/software/BeautifulSoup/">BeautifulSoup</a> to scrape a bunch of pregnancy websites my wife and I frequented.</li>
-				<li>The data was parsed into sentences and indexed as documents into <a href="https://www.elastic.co/">Elasticsearch</a>. 
+				<li>The data was parsed into sentences and <a href="https://github.com/jameskang410/elasticsearch">indexed</a> as documents into <a href="https://www.elastic.co/">Elasticsearch</a>. 
 					<ul>
 						<li>I added an integer field to every document to weigh documents' scores because there are definitely some documents that do not contain useful information. Users can help adjust this field (and therefore the search results) by using the <i>Was this helpful?</i> buttons next to each search result.</li>
 					</ul>
