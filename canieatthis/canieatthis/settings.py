@@ -24,9 +24,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = keyring.get_password('canieatthis', 'django_key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1"]
 
 
 # Application definition
@@ -39,7 +39,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'website',
-    'rest_framework',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -66,21 +65,21 @@ WSGI_APPLICATION = 'canieatthis.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
-DATABASES = {
-    # local
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'OPTIONS': {
-            'options': '-c search_path=canieatthis'
-        },
-        # database name
-        'NAME': 'postgres',
-        'USER': 'jameskang',
-        'PASSWORD': '',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-    }
-}
+# DATABASES = {
+#     # local
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'OPTIONS': {
+#             'options': '-c search_path=canieatthis'
+#         },
+#         # database name
+#         'NAME': 'postgres',
+#         'USER': 'jameskang',
+#         'PASSWORD': '',
+#         'HOST': '127.0.0.1',
+#         'PORT': '5432',
+#     }
+# }
 
 
 # Internationalization
@@ -102,9 +101,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# Email
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'canieatthiswebsite@gmail.com'
-EMAIL_HOST_PASSWORD =  keyring.get_password('canieatthiswebsite', 'emailpw')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')

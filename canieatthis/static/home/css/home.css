@@ -1,0 +1,48 @@
+.center {
+	text-align: center;
+	list-style-position: inside;
+}
+
+#footer-info {
+    position: absolute;
+    bottom: 0;
+    margin-top: 20px;
+    left: 47%;
+    height: 30px;
+}
+
+.main-area {
+	padding-top: 10%;
+}
+
+#button-area {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.helpful-area {
+	padding-left: 5px;
+}
+
+.helpful-button {
+	font-size: 11px;
+}
+
+.result {
+	padding-bottom: 5px;
+	padding-top: 10px;
+	border-bottom: 1px;
+	border-bottom-style: inset;
+}
+
+#recent-searches {
+	padding-top: 20px;
+}
+
+#about-section {
+	font-size: 20px;
+}
+
+.paragraph {
+	padding-top: 10px;
+}
