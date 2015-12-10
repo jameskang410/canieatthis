@@ -39,7 +39,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'website',
-    'rest_framework',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -66,21 +65,21 @@ WSGI_APPLICATION = 'canieatthis.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
-DATABASES = {
-    # local
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'OPTIONS': {
-            'options': '-c search_path=canieatthis'
-        },
-        # database name
-        'NAME': 'postgres',
-        'USER': 'jameskang',
-        'PASSWORD': '',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-    }
-}
+# DATABASES = {
+#     # local
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'OPTIONS': {
+#             'options': '-c search_path=canieatthis'
+#         },
+#         # database name
+#         'NAME': 'postgres',
+#         'USER': 'jameskang',
+#         'PASSWORD': '',
+#         'HOST': '127.0.0.1',
+#         'PORT': '5432',
+#     }
+# }
 
 
 # Internationalization

@@ -73,38 +73,43 @@ def about(request):
 
 	return render(request, 'about/about.html')
 
-def boost(request, increment_decrement, e_id):
+def boost(request):
 	"""
-	Helper method for home view
-		-For "Was this helpful?" feature
+	POST method for "Was this helpful?" feature
 		-Receives info from custom URL and uses it to adjust boost field
 		which affects scoring for subsequent searches
 	"""
-	es = Elasticsearch()
+	# getting AJAX request
+	if request.method == "POST":
 
-	# figuring out if boost should be incremented or decremented
-	if increment_decrement == "yes":
-		operation = "+"
-	else:
-		operation = "-"
+		increment_decrement = request.POST.get("inc_dec_bool")
+		e_id = request.POST.get("e_id")
 
-	# script written in groovy - adjusts boost and filters it to 0 - 2
-	increment_script = 'ctx._source.boost %s= factor; if (ctx._source.boost < 0) \
-	{ctx._source.boost = 0;} else if (ctx._source.boost > 2) { ctx._source.boost = 2; }' % operation
-	
-	# arbitrarily set to increase/decrease by factor of .1
-	update_script = {
-						'script' : {
-							'inline' : increment_script,
-							'params' : {
-								'factor' : .1
+		es = Elasticsearch()
+
+		# figuring out if boost should be incremented or decremented
+		if increment_decrement == "yes":
+			operation = "+"
+		else:
+			operation = "-"
+
+		# script written in groovy - adjusts boost and filters it to 0 - 2
+		increment_script = 'ctx._source.boost %s= factor; if (ctx._source.boost < 0) \
+		{ctx._source.boost = 0;} else if (ctx._source.boost > 2) { ctx._source.boost = 2; }' % operation
+		
+		# arbitrarily set to increase/decrease by factor of .1
+		update_script = {
+							'script' : {
+								'inline' : increment_script,
+								'params' : {
+									'factor' : .1
+								}
 							}
 						}
-					}
 
-	response = es.update(index='pregnancy', id=e_id, doc_type='html', body=update_script)
+		response = es.update(index='pregnancy', id=e_id, doc_type='html', body=update_script)
 
-	return JsonResponse(response)
+		return JsonResponse(response)
 
 def sentiment_conclusion(hits_array):
 	"""
