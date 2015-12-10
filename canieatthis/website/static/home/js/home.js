@@ -79,7 +79,9 @@ function submitQuery(food) {
             });
         },
         error: function (xhr, textStatus, thrownError){
-            console.log("error")
+            $("#submit-button").button('reset');
+            $("#overall-answer").empty();
+            $("#overall-answer").append('<h1 id="answer-text">Try again!</h1>')
         }
 
     });
