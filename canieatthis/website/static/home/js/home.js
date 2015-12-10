@@ -127,10 +127,10 @@ function visualizeResults(response) {
         html.push('<div class="helpful" id="helpful-thanks-' + hitsArray[i]._id + '" style="display: none;"><p><small>Thanks for your help!</small></div>');        
 
         //useful for testing
-        // $("#results").append('<p class="id">ID: ' + hitsArray[i]._id + '</p>');
-        // $("#results").append('<p class="index">INDEX: ' + hitsArray[i]._index + '</p>');
-        // $("#results").append('<p class="score">SCORE: ' + hitsArray[i]._score + '</p>');
-        // $("#results").append('<p class="boost"> BOOST: ' + hitsArray[i]._source.boost + '</p>');
+        // html.push('<p class="id">ID: ' + hitsArray[i]._id + '</p>');
+        // html.push('<p class="index">INDEX: ' + hitsArray[i]._index + '</p>');
+        // html.push('<p class="score">SCORE: ' + hitsArray[i]._score + '</p>');
+        // html.push('<p class="boost"> BOOST: ' + hitsArray[i]._source.boost + '</p>');
 
         html.push('</div>');
     }
@@ -143,7 +143,7 @@ function visualizeResults(response) {
 };
 
 //changing boost score based on "was this helpful" input
-function changeBoost(id, inc_dec_bool) {
+function changeBoost(e_id, inc_dec_bool) {
     
     var inc_dec;
     if (inc_dec_bool) {
@@ -153,21 +153,24 @@ function changeBoost(id, inc_dec_bool) {
         inc_dec = "no";
     }
 
-    var url = 'boost/' + inc_dec + '/' + id; 
+    var url = 'boost/'; 
 
     $.ajax({
+        type: "POST",
         url: url,
         data: {
+            e_id : e_id,
+            inc_dec_bool : inc_dec
         },
         success: function(response) {
-            console.log(response);
+            // console.log(response);
         },
         error: function (xhr, textStatus, thrownError){
             console.log("error");
         }
     });
 
-    $("#helpful-" + id).hide();
-    $("#helpful-thanks-" + id).show();
+    $("#helpful-" + e_id).hide();
+    $("#helpful-thanks-" + e_id).show();
 
 };

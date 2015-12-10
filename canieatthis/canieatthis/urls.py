@@ -20,6 +20,6 @@ urlpatterns = [
     url(r'^$', 'website.views.home', name='home'),
     url(r'^about/$', 'website.views.about', name='about'),
     # editing elasticsearch boost field
-    url(r'^boost/(?P<increment_decrement>yes|no)/(?P<e_id>[A-Za-z0-9\-\_]*)/$', 'website.views.boost', name='boost'),
+    url(r'^boost/$', 'website.views.boost', name='boost'),
 
 ]

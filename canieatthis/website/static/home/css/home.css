@@ -4,9 +4,8 @@
 }
 
 #footer-info {
-    position: absolute;
     bottom: 0;
-    margin-top: 20px;
+    margin-top: 40px;
     left: 47%;
     height: 30px;
 }
@@ -45,4 +44,12 @@
 
 .paragraph {
 	padding-top: 10px;
+}
+
+.absolute {
+	position: absolute;
+}
+
+.inherit {
+	position: inherit;
 }

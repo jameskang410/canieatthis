@@ -16,7 +16,7 @@
 {% endblock %}
 
 {% block container %}
-	<div class="main-area" id="about-section">
+	<div id="about-section">
 		<div class="paragraph">
 			<h1>Why?</h1>
 			<ul>
@@ -37,6 +37,12 @@
 				<li>I used <a href="https://textblob.readthedocs.org/en/dev/">TextBlob</a> to do sentiment analyses on the search results and return an overall conclusion (i.e. safe or not) based on the average of the sentiment scores. I'm not totally satisfied with this solution, but it's a start.</li>
 				<li>I used <a href="http://redis.io/">Redis</a> to handle recent searches and build a list of missed searches that are e-mailed to me (and flushed) every night via cron jobs. Theoretically I'll start scraping other websites to cover these missed searches. Theoretically...</li>
 			</ul>
-		</li>
+		</div>
 	</div>
+{% endblock %}
+
+{% block footer %}
+<div class="navbar-static-bottom center absolute" id="footer-info">
+<p>&copy;2015 <a href="http://www.jameskang.me" target="_blank">James Kang</a></p>
+</div>
 {% endblock %}
